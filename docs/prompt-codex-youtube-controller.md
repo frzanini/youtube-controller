@@ -1,175 +1,341 @@
-📄 PROMPT V1 – Criar Projeto Frontend PWA do YouTube Controller
+# Prompt para Codex – YouTube Controller
 
-(Modelo otimizado, no padrão do prompt de referência que você enviou)
+> Uso: copie TODO o conteúdo abaixo (a partir de “INÍCIO DO PROMPT”) e cole no Codex / modelo de código.
 
-OBJETIVO
+---
 
-Criar o projeto YouTube Controller – Versão Free (V1) em React + TypeScript + PWA, com armazenamento LocalStorage, contendo:
+INÍCIO DO PROMPT
+----------------
 
-Modo Pais → controle de whitelist (vídeos/canais permitidos)
+Você é um desenvolvedor sênior full stack.
 
-Modo Filhos → somente vídeos liberados com player YouTube
+Quero que você implemente a aplicação **YouTube Controller** dentro de um repositório Git com a estrutura descrita abaixo.
 
-Sem login, sem backend, offline-ready
+## CONTEXTO DO PRODUTO (RESUMO)
 
-ESTRUTURA DE ARQUIVOS A SER CRIADA
-frontend/
+O YouTube Controller é uma aplicação de controle parental para YouTube, com dois modos:
+
+- **Versão Básica (Free)** – configurações locais por dispositivo, sem login, sem backend.
+- **Versão Premium (Assinatura)** – com login e sincronização das configurações entre dispositivos via backend Python.
+
+Do ponto de vista técnico:
+
+- **V1 (prioridade agora)**: PWA em React + TypeScript, sem backend, salvando whitelist de vídeos/canais em armazenamento local.
+- **V2 (esqueleto agora)**: Backend Python (FastAPI) com endpoints para login e sincronização de whitelist, usado pela versão Premium.
+
+## ESTRUTURA DO REPOSITÓRIO
+
+Considere que o repositório se chama `youtube-controller` e já contém:
+
+- `docs/visao-produto.md` – Documento de Visão (NÃO reescrever, não apagar).
+
+Quero que você crie/complete a seguinte estrutura:
+
+```bash
+youtube-controller/
 ├── README.md
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-├── public/
-│   ├── index.html
-│   ├── manifest.json
-│   └── icons/
-│       └── pwa-icon.png (placeholder)
-└── src/
-    ├── main.tsx
-    ├── App.tsx
-    ├── styles/globals.css
-    ├── utils/mathChallenge.ts
-    ├── modules/player/YoutubePlayer.tsx
-    ├── modules/whitelist/types.ts
-    ├── modules/whitelist/storageLocal.ts
-    ├── components/
-    │   ├── Header.tsx
-    │   ├── ParentGate.tsx
-    │   ├── VideoCard.tsx
-    │   └── ChannelCard.tsx
-    └── routes/
-        ├── Home.tsx
-        ├── Pais.tsx
-        └── Filhos.tsx
+├── .gitignore
+├── docs/
+│   ├── visao-produto.md              # já existe, não alterar o conteúdo
+│   └── prompt-codex-youtube-controller.md
+├── frontend/
+│   ├── README.md
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── vite.config.ts                # ou equivalente
+│   ├── public/
+│   │   └── index.html
+│   └── src/
+│       ├── main.tsx
+│       ├── App.tsx
+│       ├── routes/
+│       │   ├── Home.tsx
+│       │   ├── Pais.tsx
+│       │   └── Filhos.tsx
+│       ├── components/
+│       │   ├── Header.tsx
+│       │   ├── VideoCard.tsx
+│       │   ├── ChannelCard.tsx
+│       │   └── ParentGate.tsx       # desafio aritmético
+│       ├── modules/
+│       │   ├── whitelist/
+│       │   │   ├── storageLocal.ts  # V1 – localStorage
+│       │   │   └── types.ts
+│       │   └── player/
+│       │       └── YoutubePlayer.tsx
+│       ├── styles/
+│       │   └── globals.css
+│       └── utils/
+│           └── mathChallenge.ts
+├── backend/
+│   ├── README.md
+│   ├── pyproject.toml ou requirements.txt
+│   ├── .env.example
+│   └── app/
+│       ├── main.py
+│       ├── core/
+│       │   ├── config.py
+│       │   └── security.py
+│       ├── api/
+│       │   └── v1/
+│       │       ├── routes_auth.py
+│       │       ├── routes_whitelist.py
+│       │       └── routes_health.py
+│       ├── models/
+│       │   ├── user.py
+│       │   ├── video.py
+│       │   └── channel.py
+│       ├── schemas/
+│       │   ├── us
+```
 
+ESCOPO – O QUE GERAR
+PRIORIDADE 1 – Frontend V1 (Free, funcional)
 
-Após concluir, gere o conteúdo de TODOS os arquivos listados.
+Implemente o frontend como uma PWA em React + TypeScript, com:
 
-DEPENDÊNCIAS
+Stack frontend
 
-Instalar via npm ou yarn:
+React + TypeScript
 
-react
+Bundler moderno (preferencialmente Vite)
 
-react-dom
+PWA: manifest + service worker básico
 
-react-router-dom
+Armazenamento: localStorage (com abstração em storageLocal.ts)
 
-typescript
+Funcionalidades V1
 
-vite
+Home (routes/Home.tsx)
 
-@vitejs/plugin-react
+Exibir:
 
-PWA → vite-plugin-pwa (config mínima + service worker auto)
+Botão “Modo Pais”
 
-IMPLEMENTAÇÃO DETALHADA (OBRIGATÓRIA)
-1. storageLocal.ts
+Botão “Modo Filhos”
 
-Persistência LocalStorage (chave fixa "ytc:whitelist")
+Botão “Entrar / Assinar Premium” (apenas visual, sem backend)
 
-Exportar:
+Texto curto explicando:
+
+O que o app faz.
+
+Diferença entre versão Free (local por dispositivo) e Premium (sync).
+
+Modo Pais (routes/Pais.tsx)
+
+Antes de mostrar o painel, usar ParentGate:
+
+Gerar uma conta aritmética simples (ex.: 7 + 4).
+
+Validar a resposta.
+
+Só em caso de acerto liberar o painel.
+
+Painel de configuração:
+
+Campo para adicionar vídeo permitido (URL ou ID do YouTube).
+
+Campo para adicionar canal permitido (URL ou ID do canal).
+
+Lista de vídeos permitidos.
+
+Lista de canais permitidos.
+
+Botão para remover itens da lista.
+
+Botão “Salvar configurações e sair” que:
+
+Salva via storageLocal.ts.
+
+Redireciona de volta para Home.
+
+Modo Filhos (routes/Filhos.tsx)
+
+Carregar whitelist do storageLocal.ts.
+
+Listar vídeos permitidos:
+
+Mostrar ao menos um rótulo (id ou label).
+
+Se possível, montar URL de thumbnail usando o ID do vídeo.
+
+Ao clicar em um vídeo:
+
+Abrir YoutubePlayer com o vídeo em destaque (iframe).
+
+Não mostrar nenhum link direto para Modo Pais.
+
+Armazenamento (modules/whitelist/storageLocal.ts + types.ts)
+
+Definir tipos:
+
+AllowedVideo { id: string; label: string; }
+
+AllowedChannel { id: string; label: string; }
+
+WhitelistConfig { videos: AllowedVideo[]; channels: AllowedChannel[]; }
+
+Funções:
 
 loadWhitelist(): WhitelistConfig
 
 saveWhitelist(config: WhitelistConfig): void
 
-2. types.ts
-export interface AllowedVideo { id: string; label: string }
-export interface AllowedChannel { id: string; label: string }
-export interface WhitelistConfig {
-  videos: AllowedVideo[]
-  channels: AllowedChannel[]
-}
+Usar localStorage sob uma chave única, por exemplo: youtube-controller:whitelist.
 
-3. ParentGate.tsx
+Componente ParentGate
 
-Gera desafio de soma simples (mathChallenge.ts)
+Usar função utilitária em utils/mathChallenge.ts para gerar os desafios.
 
-Input → valida resposta
+Comportamento:
 
-callback onUnlock()
+Exibir a pergunta (“Quanto é 7 + 5?”).
 
-4. Pais.tsx (CRUD simples local)
+Campo para resposta.
 
-Lista vídeos/canais permitidos
+Botão “Entrar”.
 
-Formulário para adicionar e remover itens
+Em caso de erro, exibir mensagem.
 
-Botão Salvar e Sair → Home
+Em acerto, chamar onUnlocked() passado via props.
 
-5. Filhos.tsx
+Componente YoutubePlayer
 
-Carrega whitelist
+Receber ID do vídeo como prop.
 
-Lista vídeos com miniatura YouTube
+Renderizar iframe do YouTube com esse vídeo.
 
-Abre player com YoutubePlayer ao clicar
+Ajustar layout para ocupar bem a tela (estilo full-width / destaque).
 
-6. Home.tsx
+Estilo global
 
-Três botões:
+Criar um layout simples em styles/globals.css.
 
-"Modo Pais"
+Header com nome do app.
 
-"Modo Filhos"
+Botões claros e grandes para Pais e Filhos.
 
-"Premium (em breve)" → somente UI
+PWA
 
-Breve texto sobre o app
+Adicionar manifest.json com:
 
-7. YoutubePlayer.tsx
+name, short_name, ícones, start_url, display=standalone.
 
-iframe YouTube
+Configurar service worker via plugin de PWA do Vite (ou equivalente simples).
 
-modo destaque responsivo
+Garantir que a aplicação seja instalável como PWA.
 
-8. PWA
+frontend/README.md
 
-manifest.json com display: standalone
+Explicar:
 
-service worker auto (via plugin)
+Como instalar dependências (npm install ou yarn).
 
-README.md (GERAR AUTOMATICAMENTE)
+Como rodar (npm run dev etc.).
 
-Incluir:
+Como gerar build de produção.
 
-Descrição do projeto (Free V1)
+Breve explicação da V1 Free.
 
-Como instalar:
+PRIORIDADE 2 – Backend V2 (Premium, esqueleto)
 
-npm install
-npm run dev
+Criar apenas o esqueleto do backend em Python com FastAPI, preparação para a versão Premium.
 
+Stack backend
 
-Como instalar como PWA
+Python 3.11+ (ou versão recente)
 
-Como usar Modo Pais & Modo Filhos
+FastAPI
 
-Estrutura de pastas do projeto
+SQLAlchemy (ORM)
 
-APÓS CRIAR TUDO
+Alembic (migrations, esqueleto)
 
-Responder confirmando:
+PostgreSQL (modelo conceitual)
 
-Arquivos gerados
+.env.example com:
 
-Código completo funcionando
+DATABASE_URL
 
-Como iniciar o projeto
+SECRET_KEY
 
-INÍCIO DO PROMPT PARA EXECUTAR NO CODEX
+JWT_EXPIRE_MINUTES
 
-(Copiar somente o bloco abaixo ao gerar código)
+Endpoints (mínimo esqueleto)
 
-Execute a criação do projeto conforme todas as especificações acima, incluindo:
+Em api/v1:
 
-- Estrutura completa de pastas e arquivos
-- Código completo do frontend React + TS + PWA
-- Componentes implementados
-- Rotas funcionando
-- LocalStorage ativo
-- README.md documentado
+GET /health
 
-Gere o código agora.
+Retorna algo como { "status": "ok" }.
 
-FIM
+POST /auth/login
+
+Placeholder que recebe credenciais fake e retorna um JWT fictício ou token estático.
+
+Deixar TODO para implementação futura de autenticação real.
+
+GET /whitelist
+
+Retorna um objeto exemplo de whitelist em JSON.
+
+Deixar comentário indicando que no futuro usará usuário autenticado e banco.
+
+POST /whitelist
+
+Recebe um JSON com whitelist e apenas faz log ou retorna eco.
+
+Deixar TODO para persistir no banco.
+
+Modelos e Schemas
+
+models/user.py
+
+Modelo User com campos básicos (id, email, plan).
+
+models/video.py
+
+Modelo Video com relation para User.
+
+models/channel.py
+
+Modelo Channel com relation para User.
+
+Schemas correspondentes em schemas/user_schema.py, schemas/video_schema.py, schemas/channel_schema.py.
+
+DB e Configuração
+
+db/session.py: criar SessionLocal e engine.
+
+db/base.py: importar os modelos.
+
+core/config.py: carregar variáveis do .env.
+
+core/security.py: helpers para JWT (podem ser simples ou TODO).
+
+backend/README.md
+
+Instruções para:
+
+Criar virtualenv.
+
+Instalar dependências.
+
+Rodar uvicorn app.main:app --reload.
+
+Informar que este backend é a base da versão Premium (ainda em desenvolvimento).
+
+REGRAS GERAIS
+
+Não modificar o conteúdo de docs/visao-produto.md.
+
+Usar nomes de arquivos, funções e variáveis em inglês.
+
+Comentar trechos importantes do código.
+
+Manter código organizado em módulos, visando fácil evolução.
+
+Quando necessário omitir detalhes repetitivos, explique claramente o padrão adotado.
+
+FIM DO PROMPT
