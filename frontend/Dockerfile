@@ -3,7 +3,7 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm ci && chmod +x node_modules/.bin/vite
+RUN npm ci && find node_modules/.bin -type f -exec chmod +x {} \;
 
 COPY . .
 RUN npm run build
