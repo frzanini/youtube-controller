@@ -18,9 +18,15 @@ function Header() {
         </Link>
         <span className="header__title">{activeTitle}</span>
       </div>
-      <div className="header__cta">
+      <nav className="header__nav">
+        <Link className={`nav__link ${pathname === '/filhos' ? 'nav__link--active' : ''}`} to="/filhos">
+          Modo Filhos
+        </Link>
+        <Link className={`nav__link ${pathname === '/pais' ? 'nav__link--active' : ''}`} to="/pais">
+          Modo Pais
+        </Link>
         <span className="pill">PWA pronta</span>
-      </div>
+      </nav>
     </header>
   )
 }
