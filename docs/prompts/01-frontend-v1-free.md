@@ -1,215 +1,340 @@
-# Prompt – Etapa 1 (Frontend V1 Free – YouTube Controller)
+Prompt – Etapa 1 (Frontend V1 Free – YouTube Controller)
 
-Este arquivo serve para armazenar o prompt que será enviado ao Codex/IA de código para gerar o **frontend completo da versão Free (V1)** do YouTube Controller.
+Versão atualizada conforme Documento de Visão do Produto
 
----
+Este arquivo armazena o prompt que será enviado ao mecanismo de geração de código (Codex/IA) para criar o frontend completo da Versão Free (V1) do YouTube Controller, agora atualizado com todas as diretrizes formais definidas no novo Documento de Visão do Produto.
 
-## 📌 OBJETIVO DA ETAPA
+📌 OBJETIVO DA ETAPA
 
-Criar um projeto **React + TypeScript + PWA** com armazenamento local (**LocalStorage**) que permita:
+Criar um frontend React + TypeScript + PWA, totalmente local (sem backend), que implemente:
 
-- Pais adicionarem/removerem vídeos/canais permitidos
-- Filhos assistirem somente vídeos liberados
-- Nenhum backend necessário nesta fase
-- Configuração salva por dispositivo
+✔ Modo Pais (Administração)
 
-Funções Premium, login e backend ficam para a Etapa 2.
+Protegido por desafio matemático
 
----
+Gestão da Whitelist:
 
-## 🔥 COMO USAR ESTE ARQUIVO
+vídeos permitidos
 
-| Ação | O que fazer |
-|---|---|
-| **Salvar no Git** | Salvar **este arquivo completo** como `docs/prompts/01-frontend-v1-free.md` |
-| **Enviar ao Codex** | Copiar **apenas** o texto entre `INÍCIO DO PROMPT PARA O CODEX` e `FIM DO PROMPT PARA O CODEX` |
-| **Após geração do código** | Instalar dependências manualmente → `npm install` → `npm run dev` |
+canais permitidos
 
-⚠ O **Codex NÃO instala pacotes**, apenas gera código.  
-Você fará a instalação manual depois.
+Nova feature: busca integrada de vídeos e canais
 
----
+Autorização de vídeo ou canal com 1 clique
 
-## ⬇ TEXTO QUE SERÁ ENVIADO AO CODEX
+Salvamento local via localStorage
 
-> Copiar apenas o bloco abaixo quando for gerar o código
+✔ Modo Filhos (Consumo Infantil)
 
----
+Interface extremamente simples
 
-### 🔻 INÍCIO DO PROMPT PARA O CODEX
+Exibe somente vídeos autorizados
 
-Crie um projeto frontend para o produto **YouTube Controller – Versão Free (V1)** usando **React + TypeScript + PWA**, seguindo estritamente as especificações abaixo.
+Player interno com:
 
----
+Sem abrir YouTube externo
 
-### 📁 Estrutura de Arquivos Obrigatória
+Sem recomendações
 
-Gerar **todos os arquivos com código completo**:
+Sem comentários
+
+Sem navegação lateral
+
+Nenhum acesso ao YouTube aberto
+
+✔ Sem backend — toda configuração é local por dispositivo
+🔥 COMO USAR ESTE ARQUIVO
+Ação	O que fazer
+Salvar no Git	Salvar como docs/prompts/01-frontend-v1-free.md
+Enviar ao Codex	Copiar apenas o bloco entre INÍCIO DO PROMPT PARA O CODEX e FIM DO PROMPT PARA O CODEX
+Após gerar o código	Executar manualmente: npm install → npm run dev
+
+⚠ O Codex NÃO instala pacotes.
+Você fará isso manualmente.
+
+⬇ TEXTO QUE SERÁ ENVIADO AO CODEX
+
+Copiar apenas o bloco abaixo quando for gerar o código.
+
+🔻 INÍCIO DO PROMPT PARA O CODEX
+
+Crie um projeto completo para o produto
+YouTube Controller – Versão Free (V1)
+usando React + TypeScript + PWA, seguindo estritamente as especificações abaixo.
+
+O objetivo é implementar:
+
+Controle parental rigoroso
+
+Modo Pais com busca e gerenciamento de permissões
+
+Modo Filhos com ambiente totalmente restrito
+
+Player interno protegido
+
+Configuração salva via localStorage
+
+Sem acesso ao YouTube aberto
+
+📁 Estrutura de Arquivos Obrigatória
+
+Gerar todos os arquivos com código completo:
 
 frontend/
 ├── README.md
-├── package.json # apenas declarar dependências, não instalar
+├── package.json
 ├── tsconfig.json
 ├── vite.config.ts
 ├── public/
-│ ├── index.html
-│ ├── manifest.json
-│ └── icons/
-│ └── pwa-icon.png # placeholder base64 ou svg simples
+│   ├── index.html
+│   ├── manifest.json
+│   └── icons/
+│       └── pwa-icon.png
 └── src/
-      ├── main.tsx
-      ├── App.tsx
-      ├── styles/globals.css
-      ├── utils/mathChallenge.ts
-      ├── modules/
-      │  ├── player/YoutubePlayer.tsx
-      │  └── whitelist/
-      │  ├── types.ts
-      │  └── storageLocal.ts
-      ├── components/
-      │  ├── Header.tsx
-      │  ├── ParentGate.tsx
-      │  ├── VideoCard.tsx
-      │  └── ChannelCard.tsx
-      └── routes/
-         ├─── Home.tsx
-         ├─── Pais.tsx
-         └─── Filhos.tsx
+    ├── main.tsx
+    ├── App.tsx
+    ├── styles/globals.css
+    ├── utils/mathChallenge.ts
+    ├── modules/
+    │   ├── player/YoutubePlayer.tsx
+    │   └── whitelist/
+    │       ├── types.ts
+    │       └── storageLocal.ts
+    ├── components/
+    │   ├── Header.tsx
+    │   ├── ParentGate.tsx
+    │   ├── VideoCard.tsx
+    │   ├── ChannelCard.tsx
+    │   └── SearchBar.tsx        # NOVO
+    └── routes/
+        ├── Home.tsx
+        ├── Pais.tsx
+        └── Filhos.tsx
 
-yaml
-Copiar código
+📦 package.json — dependências declaradas (não instalar)
 
----
+react
 
-### 📦 `package.json` deve declarar dependências
+react-dom
 
-Apenas **declarar**, NÃO executar instalação:
+react-router-dom
 
-- react
-- react-dom
-- react-router-dom
-- typescript
-- vite
-- @vitejs/plugin-react
-- vite-plugin-pwa (configuração mínima para PWA)
+typescript
 
----
+vite
 
-### 📌 Especificações de Implementação
+@vitejs/plugin-react
 
-#### `storageLocal.ts`
+vite-plugin-pwa
 
-- Usar `localStorage` com chave `"ytc:whitelist"`
-- Exportar:
+📌 Especificações de Implementação (atualizadas)
+🔐 ParentGate.tsx – Controle Parental
 
-```ts
-loadWhitelist(): WhitelistConfig
-saveWhitelist(config: WhitelistConfig): void
-Caso não exista whitelist, retornar listas vazias.
+Exibir desafio matemático simples
 
-types.ts
-ts
-Copiar código
-export interface AllowedVideo { id: string; label: string }
-export interface AllowedChannel { id: string; label: string }
-export interface WhitelistConfig {
-  videos: AllowedVideo[]
-  channels: AllowedChannel[]
-}
-mathChallenge.ts
-Função para gerar desafio aritmético simples:
+Input + Botão "Entrar"
 
-ts
-Copiar código
+Se resposta correta → libera Modo Pais
+
+Se incorreta → mensagem de erro
+
+🧠 mathChallenge.ts
 export interface MathChallenge {
   question: string
   answer: number
 }
 
-export function generateMathChallenge(): MathChallenge { ... }
-ParentGate.tsx
-Exibir pergunta matemática
+export function generateMathChallenge(): MathChallenge
 
-Input e botão "Entrar"
+💾 storageLocal.ts – Armazenamento Local
 
-Se correto → onUnlock()
+Usar localStorage na chave "ytc:whitelist"
 
-Se errado → avisar usuário
+Exportar:
 
-Pais.tsx
-Usar ParentGate antes de mostrar painel
+loadWhitelist(): WhitelistConfig
+saveWhitelist(config: WhitelistConfig): void
 
-Após liberar acesso:
 
-Adicionar/remover vídeos e canais
+Se não existir whitelist → retornar listas vazias.
 
-Salvar com saveWhitelist
+🗂 types.ts
+export interface AllowedVideo { id: string; label: string }
+export interface AllowedChannel { id: string; label: string }
 
-Botão "Salvar e sair" → voltar para /
+export interface WhitelistConfig {
+  videos: AllowedVideo[]
+  channels: AllowedChannel[]
+}
 
-Filhos.tsx
+🔍 Nova Feature – Busca de Vídeos e Canais (Modo Pais)
+
+Criar componente:
+
+components/SearchBar.tsx
+
+Input de texto
+
+Botão "Buscar"
+
+Ao buscar, consumir API pública do YouTube (simular por ora, com dados mockados)
+
+Retornar lista de resultados
+
+Cada resultado deve ter botão:
+
+"Autorizar Vídeo"
+
+"Autorizar Canal"
+
+Regras:
+
+A busca não existe no Modo Filhos
+
+Apenas pais autenticados podem buscar
+
+Resultados devem exibir:
+
+thumbnail
+
+título
+
+canal
+
+duração
+
+🧰 Pais.tsx – Modo Pais
+
+Fluxo esperado:
+
+Exibir ParentGate
+
+Após autenticação:
+
+Exibir SearchBar
+
+Exibir vídeos autorizados
+
+Exibir canais autorizados
+
+Botões:
+
+adicionar vídeo
+
+adicionar canal
+
+remover itens da whitelist
+
+"Salvar e sair" → retorna ao Home
+
+Salvar tudo via saveWhitelist()
+
+🎮 Filhos.tsx – Modo Filhos
+
 Carregar whitelist
 
-Exibir vídeos com VideoCard
+Exibir somente os vídeos autorizados
 
-Ao clicar → abrir YoutubePlayer (iframe YouTube)
+Sem barra de busca
 
-Home.tsx
-Botões grandes:
+Cada vídeo → VideoCard
+
+Ao clicar → abrir YoutubePlayer no modo protegido
+
+🎥 YoutubePlayer.tsx – Player Interno Protegido
+
+Requisitos:
+
+Receber videoId
+
+Renderizar <iframe> embed
+
+Desabilitar qualquer interação que leve ao YouTube externo
+
+Não permitir abrir no app nativo
+
+Não permitir recomendações externas
+
+Sem comentários
+
+Sem playlists laterais
+
+Deve manter a criança dentro do app
+
+🏠 Home.tsx
+
+Três botões grandes:
 
 Modo Pais → /pais
 
 Modo Filhos → /filhos
 
-Premium (em breve) → apenas interface
+Premium (em breve) → apenas visual
 
-Explicar brevemente o propósito
+Explicar resumidamente o propósito:
 
-YoutubePlayer.tsx
-Recebe videoId
+"Este aplicativo permite que crianças assistam somente conteúdos autorizados pelos pais."
 
-Renderizar iframe embed
+🎨 globals.css
 
-globals.css
-Estilo simples, mobile-first
+Visual leve e mobile-first
 
-Botões grandes, boa legibilidade
+Botões grandes
+
+Tipografia clara
+
+Layout simples para crianças
 
 📄 README.md deve conter
-Como rodar o projeto
 
-Como usar modo Pais/Filhos
+Como instalar
+
+Como rodar
+
+Como usar Modo Pais e Modo Filhos
 
 Como instalar como PWA
 
-Modelo recomendado:
+Exemplo:
 
-arduino
-Copiar código
 npm install
 npm run dev
-Resultado esperado
-Código completo gerado
 
-Estrutura final impressa no final da resposta
+🎯 Resultado esperado
+
+Todo o código gerado
+
+Estrutura completa exibida no final
+
+App funcional com:
+
+Modo Pais seguro
+
+Busca de vídeos/canais
+
+Whitelist
+
+Modo Filhos restrito
+
+Player seguro
+
+Sem acesso ao YouTube externo
 
 🔺 FIM DO PROMPT PARA O CODEX
-yaml
-Copiar código
-
----
-
-## Depois de usar o prompt no Codex você irá:
-
-```bash
+Após usar o prompt no Codex
 cd frontend
 npm install
 npm run dev
-E testar no navegador. ✔
 
-Quando quiser continuar
-Me chame dizendo:
 
-"Gerar Prompt Etapa 2 – Backend FastAPI Premium + Sincronização"
+Testar no navegador e validar:
 
-Fim do arquivo.
+Controle parental
+
+Busca
+
+Player interno
+
+Whitelist
+
+Ausência total de navegação externa

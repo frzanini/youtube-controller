@@ -1,269 +1,274 @@
-# Documento de Visão – YouTube Controller
+Documento de Visão do Produto — YouTube Controller
 
-## 1. Identificação
+(Versão Revisada e Consolidada)
 
-- **Produto:** YouTube Controller  
-- **Versão do Documento:** 1.0  
-- **Data:** _(preencher)_  
-- **Responsável:** _(preencher)_  
 
----
+1. Introdução
 
-## 2. Contexto e Motivação
+O YouTube Controller é um aplicativo de controle parental projetado exclusivamente para permitir que crianças assistam a vídeos previamente autorizados pelos pais.
+Toda a arquitetura da solução impede qualquer forma de acesso direto ao YouTube tradicional, bem como a canais, buscas, perfis, playlists, recomendações automáticas ou qualquer tipo de navegação externa.
 
-O YouTube é uma das principais fontes de entretenimento e aprendizado para crianças, porém é também um ambiente aberto, com grande variedade de conteúdos inadequados para determinadas faixas etárias.  
+O aplicativo funciona como um ambiente fechado e seguro, onde apenas conteúdos previamente selecionados e aprovados pelos responsáveis podem ser exibidos.
+Este documento descreve a visão completa do produto, incluindo público-alvo, funcionalidades, regras de negócio, jornadas de uso, requisitos, limitações e critérios de aceite.
 
-Pais e responsáveis frequentemente não possuem ferramentas simples e diretas para controlar **exatamente** o que os filhos podem assistir, ficando expostos a recomendações automáticas, algoritmos e conteúdos aleatórios.
+2. Problema
 
-O **YouTube Controller** nasce como uma solução de **controle parental e curadoria de conteúdo**, permitindo que os pais definam, de forma explícita, quais vídeos e canais do YouTube estarão disponíveis para os filhos em cada dispositivo.
+Pais e responsáveis enfrentam inúmeros desafios ao permitir que crianças utilizem plataformas abertas de vídeo como o YouTube:
 
----
+Acesso a vídeos inadequados para a idade.
 
-## 3. Objetivo do Produto
+Recomendações automáticas que levam a conteúdos indesejados.
 
-O objetivo do YouTube Controller é:
+Exposição a canais não supervisionados.
 
-> **Permitir que pais e responsáveis controlem, de forma simples e segura, quais vídeos e canais do YouTube podem ser acessados pelos filhos, oferecendo uma experiência de consumo filtrado e adequado ao contexto familiar.**
+Dificuldade de controlar o que realmente está sendo assistido.
 
-O produto será disponibilizado em duas modalidades:
+Falta de ferramentas simples para aprovação de conteúdo.
 
-1. **Versão Básica (Free):**  
-   - Configuração local por dispositivo, sem necessidade de conta ou backend.
-   - Ideal para uso individual em um único celular, tablet, PC ou Smart TV.
+Esses fatores geram insegurança e tornam o ambiente digital imprevisível para crianças pequenas.
 
-2. **Versão Premium (Assinatura – R$ 3,00/mês):**  
-   - Uso de conta (login) para sincronizar as configurações entre múltiplos dispositivos.
-   - Pais administram a lista de vídeos/canais permitidos centralmente e a mesma configuração é refletida em todos os dispositivos logados.
+3. Objetivo do Produto
 
----
+O objetivo central do YouTube Controller é garantir que a criança assista somente aos vídeos liberados pelos pais, dentro de um player interno seguro e sem qualquer possibilidade de navegação externa.
 
-## 4. Público-Alvo
+O produto deve assegurar:
 
-- Pais e responsáveis com filhos em idade infantil ou pré-adolescente.
-- Famílias que desejam limitar o acesso das crianças apenas a conteúdos previamente aprovados.
-- Contextos educativos (escolas, bibliotecas, salas de espera) que desejem disponibilizar conteúdo infantil controlado via YouTube.
+Zero acesso ao YouTube aberto ou a outras plataformas de streaming.
 
----
+Zero chance de navegação livre — nada além da whitelist pode ser exibido.
 
-## 5. Personas
+Reprodução apenas de conteúdos aprovados pelos responsáveis.
 
-### 5.1. Pai/Mãe – Administrador
+Ocultação de qualquer botão que leve ao app do YouTube.
 
-- Deseja permitir que o filho use o YouTube de forma segura.
-- Não quer lidar com configurações complexas.
-- Quer ter certeza de que **apenas** conteúdos previamente escolhidos serão exibidos.
-- Pode querer usar mais de um dispositivo (celular, tablet, TV, notebook).
+Ambiente infantil simples, reduzido, sem distrações e sem riscos.
 
-### 5.2. Filho/Filha – Usuário Consumidor
+Ferramentas para que os pais pesquisem, selecionem e autorizem vídeos e canais.
 
-- Acessa o aplicativo/tela para assistir vídeos.
-- Não tem acesso às configurações de quais vídeos/canais estão liberados.
-- Vê apenas uma lista de conteúdos aprovados pelos pais.
-- Usa o app de forma intuitiva e visual, sem precisar digitar ou navegar no YouTube direto.
+Assim, o aplicativo opera como um cofre de vídeos curados, um "mini-YouTube privado", onde só existe o que o responsável autorizou.
 
----
+4. Escopo
+4.1. Escopo Incluído
 
-## 6. Visão Geral da Solução
+Modo Pais (administração completa).
 
-O YouTube Controller será uma aplicação que atua como uma “camada de curadoria” sobre o YouTube:
+Modo Filhos (consumo restrito).
 
-- Os pais definem uma **whitelist** (lista de permissão) de vídeos e/ou canais.
-- Os filhos navegam apenas nessa whitelist, por meio de uma interface simples.
-- Os vídeos são reproduzidos via player do YouTube (embed), mas a descoberta e escolha do que assistir são controladas pelo app.
+Player interno protegido.
 
-### 6.1. Modalidades de Uso
+Controle de whitelist de vídeos e canais.
 
-#### Versão Básica (Free – por dispositivo)
+Busca interna por vídeos e canais via API do YouTube.
 
-- Não requer login.
-- As configurações são armazenadas **apenas no dispositivo** (via storage local).
-- Cada dispositivo tem sua própria lista de vídeos/canais permitidos.
-- Indicada para famílias que usam um ou poucos dispositivos, ou que não precisam de sincronização.
+Bloqueio total de navegação externa.
 
-#### Versão Premium (Assinatura – R$ 3/mês)
+Armazenamento local seguro.
 
-- Requer login (ex.: conta Google ou e-mail/senha).
-- Configurações são armazenadas em **backend Python** com banco de dados.
-- Vários dispositivos logados na mesma conta compartilham a mesma whitelist.
-- Pais podem configurar em um dispositivo e os filhos acessam em qualquer outro (ex.: celular + TV + tablet).
+Interface simplificada para crianças.
 
----
+4.2. Escopo Excluído
 
-## 7. Funcionalidades Principais
+Impedir que a criança saia do app pelo sistema operacional.
 
-### 7.1. Comuns às duas versões (Free e Premium)
+Impedir o uso de outros apps do dispositivo.
 
-1. **Tela Inicial**
-   - Opções:
-     - “Modo Pais”
-     - “Modo Filhos”
-     - “Entrar / Assinar Premium” (entrada para recursos pagos)
+Login online (versão inicial).
 
-2. **Acesso Pais (Administração)**
-   - Acesso protegido via **desafio aritmético simples** (ex.: 7 + 5 = ?).
-   - Após passar pelo desafio, o responsável acessa o painel de configuração.
-   - Funcionalidades:
-     - Adicionar vídeo permitido (via URL ou ID do YouTube).
-     - Adicionar canal permitido (via URL ou ID do canal).
-     - Listar vídeos/canais atualmente liberados.
-     - Remover vídeos/canais da lista.
-
-3. **Modo Filhos (Consumo)**
-   - Não exige login.
-   - Exibe apenas vídeos/canais que estão na whitelist daquele contexto (local ou sincronizado).
-   - Interface simplificada:
-     - Lista de vídeos permitidos (miniaturas, títulos).
-     - Possível agrupamento por canal.
-   - Ao selecionar um vídeo:
-     - Reproduzir em **tela cheia**, usando embed do YouTube.
-     - Evitar navegação para fora da lista de vídeos permitidos.
-
-4. **Encerramento de Sessão Admin**
-   - Após o responsável salvar as configurações, a sessão de administração é encerrada.
-   - O usuário volta para a tela inicial ou para o Modo Filhos.
+Sincronização em nuvem.
 
----
-
-### 7.2. Funcionalidades Específicas da Versão Básica (Free)
+5. Público-Alvo
 
-- Armazenamento das configurações **apenas no dispositivo**:
-  - Uso de `localStorage` ou `IndexedDB`, conforme decisão técnica.
-- Não há sincronização entre dispositivos.
-- Se o app for acessado em outro dispositivo, terá uma configuração independente.
-
----
-
-### 7.3. Funcionalidades Específicas da Versão Premium (Assinatura)
+Pais que desejam controle rígido de conteúdo audiovisual.
 
-- **Login e Conta**
-  - Cadastro/autenticação de conta do responsável (ex.: Google OAuth ou e-mail/senha).
-  - Identificação do usuário no backend.
+Crianças entre 3 e 12 anos.
 
-- **Sincronização em Nuvem**
-  - Whitelist de vídeos e canais armazenada no servidor (backend Python).
-  - Ao logar em qualquer dispositivo, o app sincroniza:
-    - Lista de vídeos/canais permitidos.
-    - Possível lista de dispositivos conectados (futuro).
-
-- **Gestão de Assinatura**
-  - Modelo de assinatura: R$ 3,00/mês por conta/família.
-  - Regras de acesso premium atreladas ao status da assinatura.
-
-- **Gestão de Dispositivos (Evolutivo)**
-  - Possibilidade futura de listar e, se necessário, desconectar dispositivos da conta.
-
----
-
-## 8. Regras de Negócio
-
-1. **Proteção do Modo Pais**
-   - O acesso ao painel de administração só pode ser feito após o responsável resolver corretamente uma conta aritmética simples.
-   - Em caso de erro repetido, o sistema pode:
-     - Exigir novo desafio.
-     - Eventualmente aplicar um pequeno atraso (anti-tentativa da criança).
-
-2. **Separação de Modos**
-   - Modo Filhos não exibe nenhuma opção de configuração.
-   - Não é permitido alternar diretamente de Modo Filhos para Modo Pais sem passar pelo desafio de proteção.
-
-3. **Persistência de Configuração**
-   - Free:
-     - Configurações são armazenadas localmente e não são sincronizadas.
-   - Premium:
-     - Configurações são armazenadas e sincronizadas via backend, associadas à conta do responsável.
-
-4. **Encerramento da Sessão Admin**
-   - Ao salvar as alterações da whitelist, a sessão de administração é encerrada imediatamente.
-   - O sistema retorna à tela inicial ou ao Modo Filhos.
-
-5. **Conteúdo Disponível**
-   - Apenas vídeos/canais presentes na whitelist podem ser exibidos no Modo Filhos.
-   - A aplicação não deve permitir que o filho navegue no YouTube “aberto” a partir da interface do app.
-
----
-
-## 9. Requisitos Não Funcionais
-
-1. **Usabilidade**
-   - Interface simples, intuitiva e amigável.
-   - Foco em poucos cliques para acessar vídeo no Modo Filhos.
-   - Painel dos pais com linguagem clara, sem termos técnicos complexos.
-
-2. **Desempenho**
-   - Carregamento rápido da lista de vídeos permitidos.
-   - Player deve iniciar a reprodução em tempo adequado, considerando limitações da conexão do usuário.
-
-3. **Segurança**
-   - Proteção simples do modo admin via desafio aritmético.
-   - Na versão Premium, autenticação segura (OAuth/JWT ou similar).
-   - Comunicação segura com backend (HTTPS).
-
-4. **Portabilidade**
-   - Aplicação frontend como **PWA**, capaz de rodar em:
-     - Navegador desktop.
-     - Navegador mobile.
-     - Alguns navegadores de Smart TVs.
-   - Backend em Python com FastAPI, com possibilidade de containerização (Docker).
-
----
-
-## 10. Arquitetura de Alto Nível
-
-### 10.1. Versão Básica (Free – V1)
-
-- **Frontend:**
-  - React + TypeScript.
-  - PWA com manifest e service worker.
-  - Armazenamento local (`localStorage` ou `IndexedDB`).
-- **Backend:**
-  - Não há backend na V1 (somente hospedagem de arquivos estáticos).
-
-### 10.2. Versão Premium (V2)
-
-- **Frontend:**
-  - Mesmo código-base React + TypeScript.
-  - Habilita recursos de login/sync quando a conta premium está ativa.
-
-- **Backend (Python):**
-  - Framework: FastAPI.
-  - Banco de dados: PostgreSQL (ou similar relacional).
-  - Endpoints para:
-    - Autenticação.
-    - Gerenciamento de whitelist (vídeos/canais).
-    - Sincronização de dados entre dispositivos.
-
----
-
-## 11. Roadmap de Versões
-
-- **V1 – MVP Free**
-  - PWA React + TS.
-  - Modo Pais com desafio aritmético.
-  - Cadastro/local de vídeos/canais permitidos.
-  - Modo Filhos com lista e player em tela cheia.
-  - Armazenamento local por dispositivo.
-
-- **V2 – Premium**
-  - Backend Python (FastAPI + banco de dados).
-  - Login (autenticação).
-  - Sincronização de whitelist entre dispositivos.
-  - Gestão de assinatura (R$ 3/mês).
-
-- **V3 – Evolução**
-  - Limite de tempo de tela por dia.
-  - Relatório simples de consumo (vídeos mais assistidos).
-  - Bloqueio por horário (ex.: depois das 22h).
-
----
-
-## 12. Métricas de Sucesso (Indicativas)
-
-- Número de dispositivos ativos usando a versão Free.
-- Número de contas Premium ativas.
-- Retenção mensal de usuários.
-- Quantidade média de vídeos/canais configurados por família.
-- Feedback de pais sobre facilidade de uso e sensação de segurança.
-
----
-
-_Fim do Documento de Visão._
+Escolas, creches, igrejas e instituições que necessitam de exibição segura.
+
+6. Visão Geral da Solução
+
+O YouTube Controller opera em dois modos principais:
+
+6.1. Modo Pais
+
+Área protegida por senha ou desafio matemático.
+
+Pesquisa integrada (canais e vídeos).
+
+Autorização individual ou por canal.
+
+Gerenciamento completo da whitelist.
+
+Remoção e revisão de permissões.
+
+6.2. Modo Filhos
+
+Ambiente totalmente fechado.
+
+Lista visível contém apenas vídeos aprovados.
+
+Sem campo de busca.
+
+Sem recomendação, comentários, canais ou playlists.
+
+Player interno sem acesso externo.
+
+Sem botões de “Abrir no YouTube”.
+
+7. Funcionalidades
+7.1. Funcionalidades Comuns
+
+Armazenamento local da whitelist.
+
+UI responsiva e amigável.
+
+Player interno com travas de navegação.
+
+Exibição apenas de conteúdos liberados.
+
+7.2. Funcionalidades do Modo Pais
+7.2.1. Proteção de acesso
+
+Senha ou desafio matemático.
+
+Prevenção contra acesso infantil indevido.
+
+7.2.2. Busca Integrada
+
+O administrador poderá:
+
+Pesquisar vídeos por título, palavra-chave ou ID.
+
+Pesquisar canais por nome.
+
+Visualizar resultados com miniatura, título, canal e duração.
+
+Autorizar vídeos individuais ou canais completos com 1 clique.
+
+Ver o que já está autorizado.
+
+7.2.3. Gerenciamento da Whitelist
+
+Listar vídeos e canais permitidos.
+
+Remover permissões.
+
+Atualizar metadados (miniatura, nome, duração).
+
+7.3. Funcionalidades do Modo Filhos
+
+Exibir apenas vídeos autorizados.
+
+Player interno sem botões externos.
+
+Autoplay restrito apenas à whitelist.
+
+Interface limpa, adequada para crianças pequenas.
+
+8. Regras de Negócio
+8.1. Conteúdo Liberado
+
+Somente vídeos e canais aprovados podem ser exibidos.
+
+Nenhum vídeo relacionado, recomendado ou automático deve aparecer.
+
+A solução deve funcionar como uma bolha segura.
+
+8.2. Proibição de Navegação Externa
+
+O app não deve permitir acesso ao YouTube nativo.
+
+Nenhum botão deve levar a apps externos.
+
+Links, sugestões ou telas finais não podem abrir o YouTube.
+
+8.3. Player Interno
+
+Não pode apresentar controles que permitam deixar o ambiente seguro.
+
+Deve tocar apenas conteúdos da whitelist.
+
+8.4. Modo Pais
+
+Apenas responsáveis autenticados podem alterar permissões.
+
+Busca deve respeitar as limitações da API oficial.
+
+9. Requisitos Não Funcionais
+
+Aplicativo leve, rápido e responsivo.
+
+UX simplificada para crianças pequenas.
+
+Armazenamento local criptografado (quando suportado).
+
+Player estável, com alta disponibilidade.
+
+Compatibilidade com APIs oficiais do YouTube.
+
+10. Jornada do Usuário
+10.1. Jornada do Pai
+
+Abre o app.
+
+Autentica no Modo Pais.
+
+Pesquisa vídeos/canais.
+
+Autoriza o conteúdo desejado.
+
+Alterna para Modo Filhos.
+
+A criança assiste apenas o conteúdo liberado.
+
+10.2. Jornada da Criança
+
+Abre o app já em Modo Filhos.
+
+Vê somente vídeos autorizados.
+
+Assiste dentro do player interno.
+
+Não consegue acessar nada além disso.
+
+11. Restrições
+
+Algumas limitações da API do YouTube podem restringir funcionalidades.
+
+Elementos específicos do player podem variar conforme versão da API.
+
+O app não controla o dispositivo fora de si.
+
+Se a criança fechar o app manualmente, o controle passa para o sistema operacional.
+
+12. Critérios de Aceite
+
+A criança nunca consegue abrir o YouTube nativo a partir do app.
+
+Nenhum vídeo não autorizado aparece.
+
+Busca operacional com resultados válidos.
+
+Modo Pais protegido.
+
+Player interno sem botões externos.
+
+Whitelist funcionando perfeitamente.
+
+13. Futuras Extensões
+
+Sincronização em nuvem.
+
+Perfis por filho.
+
+Tempo diário de uso.
+
+Estatísticas para os pais.
+
+Integração com ferramentas de controle do sistema operacional.
+
+14. Conclusão
+
+O YouTube Controller estabelece um novo padrão de segurança e controle parental.
+Ao criar um ambiente audiovisual totalmente fechado, baseado apenas em vídeos aprovados pelos responsáveis, o aplicativo elimina riscos comuns do YouTube aberto e proporciona uma experiência segura, confiável e alinhada às expectativas das famílias.
+
+O produto é, portanto, um aplicativo exclusivamente dedicado a assistir vídeos previamente autorizados, funcionando como um espaço protegido e supervisionado.
