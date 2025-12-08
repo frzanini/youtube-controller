@@ -16,8 +16,8 @@ function Filhos() {
   return (
     <section className="page">
       <div className="card">
-        <h1>Escolha o que assistir</h1>
-        <p>Somente vídeos e canais liberados pelos pais aparecem aqui.</p>
+        <h1>Escolha um video liberado</h1>
+        <p className="muted">Nada de buscas ou links externos. Apenas o que os pais autorizaram.</p>
       </div>
 
       {selectedVideo && (
@@ -27,17 +27,17 @@ function Filhos() {
       )}
 
       <div className="card">
-        <h2>Vídeos</h2>
+        <h2>Videos</h2>
         <div className="grid">
           {config.videos.map((video) => (
             <VideoCard key={video.id} id={video.id} label={video.label} onSelect={setSelectedVideo} />
           ))}
-          {config.videos.length === 0 && <p className="muted">Nenhum vídeo liberado ainda.</p>}
+          {config.videos.length === 0 && <p className="muted">Nenhum video liberado ainda.</p>}
         </div>
       </div>
 
       <div className="card">
-        <h2>Canais</h2>
+        <h2>Canais liberados</h2>
         <div className="grid">
           {config.channels.map((channel) => (
             <ChannelCard key={channel.id} id={channel.id} label={channel.label} />

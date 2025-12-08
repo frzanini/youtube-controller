@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 function Home() {
   return (
     <section className="hero">
-      <div className="card">
-        <h1>YouTube Controller – Versão Free</h1>
+      <div className="card hero__card">
+        <span className="pill">Versao Free</span>
+        <h1>YouTube Controller</h1>
         <p>
-          Crie uma lista branca simples para que as crianças só assistam o que você liberar. Tudo
-          roda no seu navegador, com PWA para usar offline.
+          Este aplicativo permite que criancas assistam somente conteudos autorizados pelos pais. Tudo fica salvo no
+          seu dispositivo.
         </p>
         <div className="button-grid">
           <Link className="button primary" to="/pais">

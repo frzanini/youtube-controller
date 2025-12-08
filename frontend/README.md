@@ -1,13 +1,13 @@
-# YouTube Controller – Versão Free (V1)
+# YouTube Controller – Versao Free (V1)
 
-Pequena PWA em React + TypeScript para criar uma lista branca de vídeos e canais do YouTube. Pais controlam o que é liberado; crianças só veem e assistem o que estiver salvo.
+PWA em React + TypeScript para controle parental: os pais liberam videos e canais e as criancas assistem apenas o que estiver permitido, direto no player interno.
 
 ## Requisitos
 
 - Node 18+
 - npm
 
-## Como rodar
+## Como instalar e rodar
 
 ```bash
 cd frontend
@@ -15,17 +15,20 @@ npm install
 npm run dev
 ```
 
-Abra o endereço mostrado no terminal (padrão: `http://localhost:5173`).  
-Use `npm run build` para gerar arquivos estáticos.
+Acesse a URL exibida no terminal (padrao: `http://localhost:5173`).
 
 ## Como usar
 
-- **Modo Pais (/pais):** passa pelo portão matemático, adiciona/remover vídeos e canais pelo ID do YouTube, clica em “Salvar e sair”. A whitelist fica no `localStorage` (`ytc:whitelist`).  
-- **Modo Filhos (/filhos):** mostra apenas o que foi liberado. Clique em um vídeo para assistir no player embutido. Os canais abrem no YouTube em nova aba.  
-- **Home:** acessos rápidos aos modos e aviso do Premium (placeholder).
+- **Modo Pais (/pais):** passe pelo desafio matematico, busque conteudos (mock), autorize videos/canais ou adicione IDs manualmente, remova o que quiser e clique em "Salvar e sair". Tudo fica no `localStorage` (`ytc:whitelist`).
+- **Modo Filhos (/filhos):** mostra apenas o que foi liberado. Clique em um video para abrir no player protegido. Nao ha buscas nem links externos.
+- **Home (/):** atalhos para os modos e aviso do Premium.
+
+## Player seguro
+
+O player embute o video com sandbox, sem full screen externo, sem comentarios e sem links para abrir o YouTube fora do app.
 
 ## Instalar como PWA
 
-1. Abra no navegador (Chrome/Edge/Brave).  
-2. Clique em “Instalar app” ou no ícone de instalação na barra de endereço.  
-3. Depois de instalado, o app roda em janela própria, com suporte offline básico (cache inicial via vite-plugin-pwa).
+1. Abra a aplicacao no navegador (Chrome/Edge/Brave).
+2. Clique em "Instalar app" ou no icone de instalacao na barra.
+3. O app passa a abrir em janela propria com cache inicial (via vite-plugin-pwa).

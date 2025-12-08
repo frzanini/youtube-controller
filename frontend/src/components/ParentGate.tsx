@@ -6,8 +6,8 @@ interface ParentGateProps {
 }
 
 function ParentGate({ onUnlock }: ParentGateProps) {
-  const [challengeSeed, setChallengeSeed] = useState(Date.now())
-  const challenge = useMemo(() => generateMathChallenge(challengeSeed), [challengeSeed])
+  const [refresh, setRefresh] = useState(0)
+  const challenge = useMemo(() => generateMathChallenge(), [refresh])
   const [answer, setAnswer] = useState('')
   const [error, setError] = useState('')
 
@@ -18,15 +18,15 @@ function ParentGate({ onUnlock }: ParentGateProps) {
       onUnlock()
     } else {
       setError('Resposta incorreta. Tente novamente.')
-      setChallengeSeed(Date.now())
+      setRefresh((prev) => prev + 1)
       setAnswer('')
     }
   }
 
   return (
     <div className="card">
-      <h2>Confirmação para Pais</h2>
-      <p>Responda ao desafio para acessar o painel.</p>
+      <h2>Somente para pais</h2>
+      <p>Resolva o desafio para continuar.</p>
       <form className="form" onSubmit={handleSubmit}>
         <label className="form__label">
           {challenge.question}

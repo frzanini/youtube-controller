@@ -1,14 +1,14 @@
 import { Link, useLocation } from 'react-router-dom'
 
 const titles: Record<string, string> = {
-  '/': 'YouTube Controller – Free',
+  '/': 'YouTube Controller Free',
   '/pais': 'Painel para Pais',
   '/filhos': 'Modo Filhos'
 }
 
 function Header() {
   const { pathname } = useLocation()
-  const activeTitle = titles[pathname] ?? 'YouTube Controller – Free'
+  const activeTitle = titles[pathname] ?? 'YouTube Controller Free'
 
   return (
     <header className="header">
@@ -19,7 +19,7 @@ function Header() {
         <span className="header__title">{activeTitle}</span>
       </div>
       <div className="header__cta">
-        <span className="pill">PWA Ready</span>
+        <span className="pill">PWA pronta</span>
       </div>
     </header>
   )

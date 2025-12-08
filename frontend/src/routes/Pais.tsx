@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ParentGate from '../components/ParentGate'
+import SearchBar from '../components/SearchBar'
 import { loadWhitelist, saveWhitelist } from '../modules/whitelist/storageLocal'
 import { AllowedChannel, AllowedVideo, WhitelistConfig } from '../modules/whitelist/types'
 
@@ -19,14 +20,22 @@ function Pais() {
   const handleAddVideo = (event: FormEvent) => {
     event.preventDefault()
     if (!newVideo.id || !newVideo.label) return
-    setConfig((prev) => ({ ...prev, videos: [...prev.videos, newVideo] }))
+    setConfig((prev) =>
+      prev.videos.find((v) => v.id === newVideo.id)
+        ? prev
+        : { ...prev, videos: [...prev.videos, newVideo] }
+    )
     setNewVideo({ id: '', label: '' })
   }
 
   const handleAddChannel = (event: FormEvent) => {
     event.preventDefault()
     if (!newChannel.id || !newChannel.label) return
-    setConfig((prev) => ({ ...prev, channels: [...prev.channels, newChannel] }))
+    setConfig((prev) =>
+      prev.channels.find((c) => c.id === newChannel.id)
+        ? prev
+        : { ...prev, channels: [...prev.channels, newChannel] }
+    )
     setNewChannel({ id: '', label: '' })
   }
 
@@ -43,6 +52,20 @@ function Pais() {
     navigate('/')
   }
 
+  const authorizeVideo = (video: AllowedVideo) => {
+    setConfig((prev) =>
+      prev.videos.find((item) => item.id === video.id) ? prev : { ...prev, videos: [...prev.videos, video] }
+    )
+  }
+
+  const authorizeChannel = (channel: AllowedChannel) => {
+    setConfig((prev) =>
+      prev.channels.find((item) => item.id === channel.id)
+        ? prev
+        : { ...prev, channels: [...prev.channels, channel] }
+    )
+  }
+
   if (!unlocked) {
     return (
       <section className="page">
@@ -54,17 +77,19 @@ function Pais() {
   return (
     <section className="page">
       <div className="card">
-        <h1>Painel dos Pais</h1>
-        <p>Adicione vídeos e canais permitidos. As crianças só verão essa lista.</p>
+        <h1>Painel dos pais</h1>
+        <p>Busque, autorize e salve videos e canais. Nada sai do navegador.</p>
       </div>
+
+      <SearchBar onAuthorizeVideo={authorizeVideo} onAuthorizeChannel={authorizeChannel} />
 
       <div className="grid two-cols">
         <div className="card">
-          <h2>Vídeos liberados</h2>
+          <h2>Videos liberados</h2>
           <form className="form" onSubmit={handleAddVideo}>
             <input
               className="input"
-              placeholder="ID do vídeo (ex: dQw4w9WgXcQ)"
+              placeholder="ID do video (ex: dQw4w9WgXcQ)"
               value={newVideo.id}
               onChange={(e) => setNewVideo((prev) => ({ ...prev, id: e.target.value }))}
               required
@@ -77,7 +102,7 @@ function Pais() {
               required
             />
             <button className="button secondary" type="submit">
-              Adicionar vídeo
+              Adicionar video
             </button>
           </form>
           <ul className="list">
@@ -92,7 +117,7 @@ function Pais() {
                 </button>
               </li>
             ))}
-            {config.videos.length === 0 && <p className="muted">Nenhum vídeo ainda.</p>}
+            {config.videos.length === 0 && <p className="muted">Nenhum video ainda.</p>}
           </ul>
         </div>
 
