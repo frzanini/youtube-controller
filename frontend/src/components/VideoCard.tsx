@@ -1,16 +1,25 @@
 interface VideoCardProps {
-  id: string
-  label: string
+  videoId: string
+  title: string
+  thumbnailUrl: string
   onSelect: (id: string) => void
+  size?: 'small' | 'medium'
 }
 
-function VideoCard({ id, label, onSelect }: VideoCardProps) {
+function VideoCard({ videoId, title, thumbnailUrl, onSelect, size = 'medium' }: VideoCardProps) {
+  const sizeClass = size === 'small' ? 'video-card--small' : 'video-card--medium'
   return (
-    <button className="card card--clickable" onClick={() => onSelect(id)}>
-      <span className="chip">Video liberado</span>
-      <h3>{label}</h3>
-      <p className="muted">ID: {id}</p>
-      <span className="link">Assistir dentro do app</span>
+    <button className={`video-card ${sizeClass}`} onClick={() => onSelect(videoId)} title={title}>
+      <div className="video-card__thumb">
+        <img
+          src={thumbnailUrl}
+          alt={title}
+          loading="lazy"
+          onError={(e) => {
+            ;(e.target as HTMLImageElement).src = 'https://via.placeholder.com/200x112.png?text=Video'
+          }}
+        />
+      </div>
     </button>
   )
 }

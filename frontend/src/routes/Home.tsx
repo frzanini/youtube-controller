@@ -1,6 +1,17 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react'
+import { loadWhitelist } from '../modules/whitelist/storageLocal'
 
 function Home() {
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const config = loadWhitelist()
+    if (config.videos.length > 0 || config.channels.length > 0) {
+      navigate('/filhos', { replace: true })
+    }
+  }, [navigate])
+
   return (
     <section className="hero">
       <div className="card hero__card">

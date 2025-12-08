@@ -317,7 +317,7 @@ function Pais() {
       {activeTab === 'authorized' && (
         <>
           <div className="card">
-            <h2>Videos liberados</h2>
+        <h2>Videos liberados</h2>
             <p className="muted">Selecione para remover. Tudo fica salvo apenas aqui.</p>
             <AdminResultsGrid
               mode="videos"

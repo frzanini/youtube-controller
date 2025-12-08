@@ -17,3 +17,17 @@ export interface WhitelistConfig {
   videos: AllowedVideo[]
   channels: AllowedChannel[]
 }
+
+export interface WatchHistoryItem {
+  videoId: string
+  lastWatchedAt: number
+}
+
+export interface VideoInfo {
+  videoId: string
+  title: string
+  thumbnailUrl: string
+  channelTitle?: string
+  duration?: string
+  channelId?: string
+}

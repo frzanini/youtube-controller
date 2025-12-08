@@ -50,6 +50,25 @@ app.listen(PORT, () => {
   console.log(`YouTube Controller backend rodando na porta ${PORT}`)
 })
 
+// Lista videos de um canal autorizado (para a area infantil)
+app.get('/api/channel-videos', async (req, res) => {
+  const channelId = typeof req.query.channelId === 'string' ? req.query.channelId.trim() : ''
+  const pageToken = typeof req.query.pageToken === 'string' ? req.query.pageToken : undefined
+  if (!channelId) {
+    return res.status(400).json({ error: 'Canal invalido.' })
+  }
+  if (!API_KEY) {
+    return res.status(500).json({ error: 'Chave da API ausente no servidor.' })
+  }
+  try {
+    const result = await fetchChannelVideos(channelId, pageToken)
+    return res.json(result)
+  } catch (error) {
+    console.error('[YouTube channel videos error]', error)
+    return res.status(500).json({ error: 'Nao foi possivel carregar videos do canal agora.' })
+  }
+})
+
 async function searchVideos(query, pageToken) {
   const searchUrl = new URL(`${YT_BASE}/search`)
   searchUrl.searchParams.set('part', 'snippet')
@@ -160,4 +179,57 @@ function parseDuration(iso) {
 
   const base = `${h > 0 ? `${h}:` : ''}${h > 0 ? String(m).padStart(2, '0') : m}:${String(s).padStart(2, '0')}`
   return base
+}
+
+async function fetchChannelVideos(channelId, pageToken) {
+  const searchUrl = new URL(`${YT_BASE}/search`)
+  searchUrl.searchParams.set('part', 'snippet')
+  searchUrl.searchParams.set('type', 'video')
+  searchUrl.searchParams.set('maxResults', '15')
+  searchUrl.searchParams.set('channelId', channelId)
+  searchUrl.searchParams.set('order', 'date')
+  if (pageToken) searchUrl.searchParams.set('pageToken', pageToken)
+  searchUrl.searchParams.set('key', API_KEY)
+
+  const searchResp = await fetch(searchUrl)
+  if (!searchResp.ok) throw new Error(`YouTube search channel failed: ${searchResp.status}`)
+  const searchJson = await searchResp.json()
+  const items = Array.isArray(searchJson.items) ? searchJson.items : []
+  const videoIds = items.map((item) => item.id?.videoId).filter(Boolean)
+
+  let durationMap = new Map()
+  if (videoIds.length > 0) {
+    const detailsUrl = new URL(`${YT_BASE}/videos`)
+    detailsUrl.searchParams.set('part', 'contentDetails')
+    detailsUrl.searchParams.set('id', videoIds.join(','))
+    detailsUrl.searchParams.set('key', API_KEY)
+    const detailsResp = await fetch(detailsUrl)
+    if (detailsResp.ok) {
+      const detailsJson = await detailsResp.json()
+      durationMap = new Map(
+        (detailsJson.items || []).map((vid) => [vid.id, parseDuration(vid.contentDetails?.duration)])
+      )
+    }
+  }
+
+  return {
+    nextPageToken: searchJson.nextPageToken || null,
+    items: items.map((item) => {
+      const snippet = item.snippet || {}
+      const thumb =
+        snippet.thumbnails?.high?.url ||
+        snippet.thumbnails?.medium?.url ||
+        snippet.thumbnails?.default?.url ||
+        ''
+      const videoId = item.id?.videoId
+      return {
+        videoId,
+        channelId,
+        title: snippet.title || 'Video do canal',
+        channelTitle: snippet.channelTitle || '',
+        thumbnailUrl: thumb,
+        duration: durationMap.get(videoId) || '--:--'
+      }
+    })
+  }
 }

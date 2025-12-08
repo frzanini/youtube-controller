@@ -1,12 +1,16 @@
 interface YoutubePlayerProps {
   videoId: string
+  autoPlay?: boolean
+  fullscreen?: boolean
 }
 
-function YoutubePlayer({ videoId }: YoutubePlayerProps) {
-  const src = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&controls=1&fs=1&iv_load_policy=3&disablekb=1`
+function YoutubePlayer({ videoId, autoPlay = false, fullscreen = false }: YoutubePlayerProps) {
+  const src = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&controls=1&fs=1&iv_load_policy=3&disablekb=1${
+    autoPlay ? '&autoplay=1' : ''
+  }`
 
   return (
-    <div className="player">
+    <div className={`player ${fullscreen ? 'player--fullscreen' : ''}`}>
       <iframe
         title="Player seguro"
         src={src}

@@ -287,8 +287,91 @@ a {
   aspect-ratio: 16 / 9;
 }
 
+.player--fullscreen iframe {
+  min-height: 70vh;
+}
+
 .player__notice {
   margin-top: 0.5rem;
+}
+
+.carousel {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(180px, 1fr);
+  gap: 0.75rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+.kids-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.video-card {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 0.5rem;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+}
+
+.video-card:hover {
+  transform: scale(1.02);
+  filter: brightness(1.03);
+  box-shadow: 0 12px 28px rgba(14, 165, 233, 0.15);
+}
+
+.video-card__thumb {
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.video-card__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.video-card__meta {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.video-card__meta h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.video-card--small {
+  min-width: 180px;
+  max-width: 220px;
+}
+
+.video-card--medium {
+  min-height: 100%;
+}
+
+.kids-page h1,
+.kids-page h2 {
+  margin: 0 0 0.35rem;
+}
+
+.search-bar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: 0 6px 12px rgba(15, 23, 42, 0.06);
 }
 
 .search {
@@ -527,10 +610,18 @@ a {
   .admin-card--video {
     grid-template-columns: 1fr;
   }
+
+  .carousel {
+    grid-auto-columns: minmax(150px, 1fr);
+  }
 }
 
 @media (min-width: 640px) {
   .admin-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .kids-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -539,10 +630,18 @@ a {
   .admin-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .kids-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 1280px) {
   .admin-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .kids-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
